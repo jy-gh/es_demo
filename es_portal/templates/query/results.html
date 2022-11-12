@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Records{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  {% for record in records %}
+    <article class="record">
+      <div>
+        <h1><a class="record" href="{{ record['_source']['uri'] }}">{{ record['_source']['title'] }}</a></h1>
+        <p>ID: {{ record['_id'] }}</p>
+        <p>URL: {{ record['_source']['uri'] }}</p>
+        <p>Path: {{ record['_source']['path'] }}</p>
+        <p>Keyword: {{ record['_source']['keyword'] }}</p>
+        <p>Tags: {{ record['_source']['tags'] }}</p>
+        <p>Date Added: {{ record['_source']['date_added_iso'] }}</p>
+        <p>Last Modified: {{ record['_source']['last_modified_iso'] }}</p>
+        <hr/>
+      </div>
+    </article>
+    {% if not loop.last %}
+      <hr>
+    {% endif %}
+  {% endfor %}
+
+  <a class="button" href="{{ url_for('query.search') }}">New Search</a>
+
+{% endblock %}

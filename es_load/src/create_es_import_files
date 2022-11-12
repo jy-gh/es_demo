@@ -1,0 +1,121 @@
+#! /usr/bin/env python3
+
+import argparse
+from datetime import datetime
+import json
+import os
+
+from firefox_bookmarks.bookmark_nodes import BookmarkNodes
+
+# Was using '\t' initially, but that made Elasticsearch do something weird
+PATH_SEP = '//'
+
+class CreateESImportFiles:
+
+    def __init__(self):
+        self.file_extension = ".ndjson"
+        self.timestamp = (datetime.now()).strftime("%Y_%m_%d_%H_%M_%S")
+        self.default_file_stem = self.timestamp + "_" + "output-"
+        self._parse_arguments()
+
+    def _parse_arguments(self):
+        parser = argparse.ArgumentParser(
+            description="Create Elasticsearch import files (in .ndjson format) \
+            from Firefox bookmark export files (in JSON format)"
+        )
+        parser.add_argument(
+            "-b",
+            "--batch-size",
+            dest="batch_size",
+            type=int,
+            required=False,
+            default=-1,
+            help="number of records per .ndjson file"
+        )
+        parser.add_argument(
+            "-f",
+            "--filename",
+            dest="input_filename",
+            type=str,
+            required=True,
+            help="JSON input bookmark file to parse and load"
+        )
+        parser.add_argument(
+            "-o",
+            "--output-directory",
+            dest="output_directory",
+            type=str,
+            required=False,
+            help="output directory for created .ndjson files"
+        )
+        parser.add_argument(
+            "--stem",
+            dest="file_stem",
+            type=str,
+            required=False,
+            default=None,
+            help="file prefix instead of default; an example default filename is \
+            YYYY_MM_DD_HH_MI_SS_output-4.ndjson"
+        )
+        parsed_arguments = parser.parse_args()
+        self.arguments = vars(parsed_arguments)
+
+    def _parse_bookmarks_file(self, filename):
+
+        with open(filename, "r") as input_json_file:
+            input_json = json.load(input_json_file)
+
+        nodes = BookmarkNodes(input_json, PATH_SEP)
+        return nodes
+
+    def _create_es_record(self, original_id):
+        return { "index": { "_id": original_id } }
+
+    def _batch_output(self, nodes, batch_size):
+        record_count = 1
+        current_index = 0
+        file_number = 1
+        to_dispatch = []
+        last_index = nodes.node_count() - 1
+
+        for node in nodes.all():
+            to_dispatch.append(self._create_es_record(node.original_id))
+            to_dispatch.append(node.copy_as_dict())
+
+            if current_index == last_index:
+                self._write_import_file(file_number, record_count, to_dispatch)
+                continue
+
+            if record_count == batch_size:
+                self._write_import_file(file_number, record_count, to_dispatch)
+                to_dispatch.clear()
+                record_count = 0
+                file_number += 1
+
+            record_count += 1
+            current_index += 1
+
+    def _write_import_file(self, file_number, record_count, output_records):
+
+        filename_fragment = str(file_number) + self.file_extension
+
+        if self.arguments['file_stem'] is None:
+            filename = self.default_file_stem + filename_fragment
+        else:
+            filename = self.arguments['file_stem'] + filename_fragment
+
+        directory = self.arguments['output_directory']
+        full_path = directory + os.sep + filename
+        print("Writing output [" + str(record_count) + " records] to " + full_path)
+        with open(full_path, 'w', encoding='utf-8') as output:
+            for item in output_records:
+                output.write(json.dumps(item) + "\n")
+
+    def run(self):
+
+        nodes = self._parse_bookmarks_file(self.arguments['input_filename'])
+        self._batch_output(nodes, self.arguments['batch_size'])
+
+if __name__ == "__main__":
+    program = CreateESImportFiles()
+    program.run()

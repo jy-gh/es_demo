@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+
+
+
+{% block header %}
+  <h1>{% block title %}Search{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+  <h2>Search by Title</h2>
+  <form action="" method="post">
+    <label for="title">Title (wildcards '?' and '*' are allowed)</label>
+    <input name="title" required>
+    <input type="hidden" id="search_type" name="search_type" value="by_title">
+    <input type="submit">
+  </form>
+
+  <h2>Search by Path</h2>
+  <form action="" method="post">
+    <label for="path">Path (wildcards '?' and '*' are allowed)</label>
+    <input name="path" required>
+    <input type="hidden" id="search_type" name="search_type" value="by_path">
+    <input type="submit">
+  </form>
+
+  <h2>Search by URL</h2>
+  <form action="" method="post">
+    <label for="uri">URI/URL (wildcards '?' and '*' are allowed)</label>
+    <input name="uri" required>
+    <input type="hidden" id="search_type" name="search_type" value="by_uri">
+    <input type="submit">
+  </form>
+
+  <h2>Search by Keyword</h2>
+  <form action="" method="post">
+    <label for="keyword">Path (wildcards '?' and '*' are allowed)</label>
+    <input name="keyword" required>
+    <input type="hidden" id="search_type" name="search_type" value="by_keyword">
+    <input type="submit">
+  </form>
+
+  <h2>Search by Tag</h2>
+  <form action="" method="post">
+    <label for="tags">Tag (wildcards '?' and '*' are allowed)</label>
+    <input name="tags" required>
+    <input type="hidden" id="search_type" name="search_type" value="by_tags">
+    <input type="submit">
+  </form>
+
+  <h2>Search by ID</h2>
+  <form action="" method="post">
+    <label for="original_id">ID</label>
+    <input name="original_id" required>
+    <input type="hidden" id="search_type" name="search_type" value="by_id">
+    <input type="submit">
+  </form>
+
+{% endblock %}

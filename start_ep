@@ -1,0 +1,5 @@
+#!/bin/sh
+
+export REQUESTS_CA_BUNDLE=http_ca.crt
+
+flask --app es_portal --debug run
