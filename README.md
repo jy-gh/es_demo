@@ -4,9 +4,9 @@
 
 This project is intended to demonstrate the use of simple **Elasticsearch** features from a web application.
 
-This document will provide installation and usage instruction for the following items:
+This document will provide installation and usage instructions for the following items:
 
-* Installation of a containerized **Elasticsearch** installation via **Docker**
+* A containerized **Elasticsearch** installation via **Docker**
 * A simple web application, called the **Elasticsearch Portal**, written using the **Flask** web application framework, to query the **Elasticsearch** index for data
 * A set of sample data (**Firefox** bookmark data) for search queries
 * A bulk import script
@@ -36,7 +36,7 @@ To install **Elasticsearch** locally, consult the download and installation inst
 
 2. Clone the repository as follows:
 
-   `git clone https://github.com/jy-gh/Elasticsearch-Docker-Flask-Demo.git`
+   `git clone https://github.com/jy-gh/es_demo.git`
 
 3. Optionally, create a virtual environment for the repository.
 
