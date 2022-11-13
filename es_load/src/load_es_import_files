@@ -32,8 +32,8 @@ class BulkLoadESFiles:
             description="Load Elasticsearch bookmark import files"
         )
         parser.add_argument(
-            "--cert-path",
-            dest="cert_path",
+            "--cert-file",
+            dest="cert_file",
             type=str,
             required=False,
             help="Path to the SSL cert file (.pem, .crt, etc.)"
@@ -110,12 +110,18 @@ class BulkLoadESFiles:
     def _set_curl_options(self):
         arguments = []
 
-        if self.arguments['cert_path']:
+        if self.arguments['cert_file']:
             arguments.append("--cacert")
-            arguments.append(os.path.expandvars(self.arguments['cert_path']))
-        elif 'cert_path' in self.config:
+            arguments.append(os.path.expandvars(self.arguments['cert_file']))
+        elif 'cert_file' in self.config:
             arguments.append("--cacert")
-            arguments.append(os.path.expandvars(self.config['cert_path']))
+            arguments.append(os.path.expandvars(self.config['cert_file']))
+        elif 'cert_file' in self.config:
+            arguments.append("--cacert")
+            arguments.append(os.path.expandvars(self.config['cert_file']))
+        elif 'CERT_FILE' in self.config:
+            arguments.append("--cacert")
+            arguments.append(os.path.expandvars(self.config['CERT_FILE']))
 
         if self.arguments['config']:
             arguments.append("--config")
