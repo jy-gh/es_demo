@@ -58,14 +58,18 @@ To install **Elasticsearch** locally, consult the download and installation inst
 
    `pip install -r requirements.txt`
 
-6. Create a `.env` file in the top-level directory of the repository with the following contents, replacing the word *password* with the actual **Elasticsearch** password:
+6. Create a `.env` file in the top-level directory of the repository with the following contents. Change the following items in the example below:
+
+   - Replace the word *password* with the actual **Elasticsearch** password
+   - Replace the string *top-level-directory* with the path to the top-level directory of the repository
 
    ````
    # Development settings
    ELASTIC_USER=elastic
    ELASTIC_USER_PASSWORD=password
    INDEX=bookmark_sample
-   BASE_URL=https://localhost:9000
+   BASE_URL=https://localhost:9200
+   CERT_PATH=full_path_to_the_cert_file
    ````
 
    The reason this file was not included in the distribution is to prevent the inadvertent disclosure of username/passwords.
@@ -75,7 +79,7 @@ To install **Elasticsearch** locally, consult the download and installation inst
 7. Create a `.curl` file in the top-level directory of the repository with the following contents, replacing the word *password* with the actual password:
 
    ```
-   —user elastic:password
+   --user elastic:password
    ```
 
    This file allows password-less access via `curl` to the **Elasticsearch** index.
