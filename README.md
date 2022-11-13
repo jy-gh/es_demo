@@ -69,7 +69,7 @@ To install **Elasticsearch** locally, consult the download and installation inst
    ELASTIC_USER_PASSWORD=password
    INDEX=bookmark_sample
    BASE_URL=https://localhost:9200
-   CERT_PATH=full_path_to_the_cert_file
+   CERT_PATH=top-level-directory
    ````
 
    The reason this file was not included in the distribution is to prevent the inadvertent disclosure of username/passwords.
