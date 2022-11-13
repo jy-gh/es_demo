@@ -32,13 +32,19 @@ To install **Elasticsearch** locally, consult the download and installation inst
 
 ### Installing the ES Portal Flask application and utilities
 
-1. Open a terminal window and change to the directory where the application should be installed. This directory is the **top-level directory** of the **repository**.
+1. Open a terminal window and change to the directory where the application should be installed.
 
 2. Clone the repository as follows:
 
    `git clone https://github.com/jy-gh/es_demo.git`
 
-3. Optionally, create a virtual environment for the repository.
+3. Change to the newly-created `es_demo` directory:
+
+   `cd es_demo`
+
+   This directory is the **top-level directory** of the **repository**.
+
+4. Optionally, create a virtual environment for the repository.
 
    Although optional, this step is highly recommended, as it prevents **Python** packages—or even versions of **Python**—used in this project from conflicting with those used by other applications.
 
@@ -46,11 +52,11 @@ To install **Elasticsearch** locally, consult the download and installation inst
 
    `python3 -m venv venv`
 
-4. If you created a virtual environment in the previous step, activate that virtual environment with the following command:
+5. If you created a virtual environment in the previous step, activate that virtual environment with the following command:
 
    `source venv/bin/activate`
 
-5. Install the required **Python** packages.
+6. Install the required **Python** packages.
 
    **Note that if you did not use—and *activate*—a virtual environment as described in the previous step, these Python packages will be installed globally, which could break existing Python applications.**
 
@@ -58,7 +64,7 @@ To install **Elasticsearch** locally, consult the download and installation inst
 
    `pip install -r requirements.txt`
 
-6. Create a `.env` file in the top-level directory of the repository with the following contents. Change the following items in the example below:
+7. Create a `.env` file in the top-level directory of the repository with the following contents. Change the following items in the example below:
 
    - Replace the word *password* with the actual **Elasticsearch** password
    - Replace the string *complete_path_to_the_cert_file* with the full path to the security certificate file
@@ -76,7 +82,7 @@ To install **Elasticsearch** locally, consult the download and installation inst
 
    The `.env` file that was just created should **not** be checked into version control.
 
-7. Create a `.curl` file in the top-level directory of the repository with the following contents, replacing the word *password* with the actual password:
+8. Create a `.curl` file in the top-level directory of the repository with the following contents, replacing the word *password* with the actual password:
 
    ```
    --user elastic:password
@@ -91,7 +97,7 @@ To install **Elasticsearch** locally, consult the download and installation inst
 
    The `.curl` file that was just created should **not** be checked into version control.
 
-7. Copy the security certificate for the **Elasticsearch** installation into the top-level directory of the repository. (If **Elasticsearch** was installed via the instructions in [README-es-docker-install.md](README-es-docker-install.md), the certificate was saved locally in step 9 of those instructions.)
+9. Copy the security certificate for the **Elasticsearch** installation into the top-level directory of the repository. (If **Elasticsearch** was installed via the instructions in [README-es-docker-install.md](README-es-docker-install.md), the certificate was saved locally in step 9 of those instructions.)
 
    If a certificate is not available to the **Elasticsearch Portal** the application will be unable to connect to the **Elasticsearch** instance in order to query data and `ssl.SSLCertVerificationError` errors will appear in the logfile.
 
