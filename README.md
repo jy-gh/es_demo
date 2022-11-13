@@ -173,7 +173,7 @@ Files created by the command are ready to be imported to **Elasticsearch** using
 
 ## Starting the Elasticsearch Portal web server
 
-A web server hosting the **Elasticsearch Portal** must be started before using the **Elasticsearch Portal**. Run the following command from the top-level directory of the repository:
+The **Elasticsearch Portal** requires a running web server to host the application. Issue the following command from the top-level directory of the repository to start the web server:
 
 `./start_ep`
 
@@ -181,13 +181,9 @@ Errors, if any, will be displayed in this terminal window after the server is st
 
 ## Using the Elasticsearch Portal
 
-The **Elasticsearch Portal** application may be accessed at this URL by default:
+The **Elasticsearch Portal** application may be accessed at this URL:
 
 [http://localhost:5000/query/search](http://localhost:5000/query/search)
-
-If the browser displays an error message such as "Unable to connect" or "This site can't be reached" it likely means that the web server wasn't started.
-
-See [Starting the Elasticsearch Portal web server](#starting-the-elasticsearch-portal-web-server) for instructions on how to start the web server.
 
 This version of the ES Portal allows users to search for indexed bookmarks using the following kinds of queries:
 
@@ -198,7 +194,7 @@ This version of the ES Portal allows users to search for indexed bookmarks using
 - *Tags*, with support for wildcards
 - *ID*
 
-Note that keyword and tag data will only be searchable if the `large_datafile.ndjson` file was loaded.
+Note that keyword and tag data searches will only return results if the `large_datafile.ndjson` file was loaded.
 
 ### Wildcard queries
 
@@ -211,6 +207,38 @@ The **\*** character matches zero or more characters. A wildcard search for **\*
 The **?** character matches a single character, only. A wildcard search for **d?g** would match "dig", "dog", and "dug", but not "digging" or "underdog".
 
 All of the search fields, with the exception of the ID search, support wildcard queries.
+
+## Troubleshooting
+
+### Unable to connect errors when invoking the Elasticsearch Portal
+
+If the browser displays an error message such as "Unable to connect" or "This site can't be reached" it likely means that the web server wasn't started.
+
+See [Starting the Elasticsearch Portal web server](#starting-the-elasticsearch-portal-web-server) for instructions on how to start the web server.
+
+### 400 Bad Request errors in the web server output
+
+Attempting to access the **Elasticsearch Portal** using **https** will fail unless a security certificate has been generated for *localhost*. Use the **http** URL in this case.
+
+### SSLError when searching
+
+If the `http_ca.crt` file is not correctly referenced by the web server on startup the following error will display in the browser when attempting to search:
+
+```
+requests.exceptions.SSLError: HTTPSConnectionPool(host='localhost', port=9200): Max retries exceeded with url: /bookmark_sample/_search/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self signed certificate in certificate chain (_ssl.c:1108)')))
+```
+
+There are two possible ways to fix this. Either
+
+1. Update the `.env` file with the correct path to the `http_ca.crt` file.
+
+   or
+
+2. Copy the `http_ca.crt` file to the path specified in the `.env` file.
+
+If the `http_ca.crt` file cannot be found it can always be copied from the Elasticsearch container using the following command:
+
+`docker cp es01:/usr/share/elasticsearch/config/certs/http_ca.crt .`
 
 ## TODO
 
@@ -265,3 +293,7 @@ It would be useful to query for data via Regular Expressions, which **Elasticsea
 #### Upgrade the look and feel
 
 The application is sparse to the point of being ugly, and would benefit from an improved user interface and CSS.
+
+#### Testing
+
+There are no automated tests for any of the demo code.
