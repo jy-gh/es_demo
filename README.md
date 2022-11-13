@@ -64,10 +64,12 @@ To install **Elasticsearch** locally, consult the download and installation inst
 
    `pip install -r requirements.txt`
 
-7. Create a `.env` file in the top-level directory of the repository with the following contents. Change the following items in the example below:
+7. Copy the security certificate for the **Elasticsearch** installation into the top-level directory of the repository. (If **Elasticsearch** was installed via the instructions in [README-es-docker-install.md](README-es-docker-install.md), the certificate was saved locally in step 9 of those instructions.)
+
+8. Create a `.env` file in the top-level directory of the repository with the following contents. Change the following items in the example below:
 
    - Replace the word *password* with the actual **Elasticsearch** password
-   - Replace the string *complete_path_to_the_cert_file* with the full path to the security certificate file
+   - Replace the string *complete_path_to_the_cert_file* with the full path and filename of the security certificate file
 
    ````
    # Development settings
@@ -82,7 +84,7 @@ To install **Elasticsearch** locally, consult the download and installation inst
 
    The `.env` file that was just created should **not** be checked into version control.
 
-8. Create a `.curl` file in the top-level directory of the repository with the following contents, replacing the word *password* with the actual password:
+9. Create a `.curl` file in the top-level directory of the repository with the following contents, replacing the word *password* with the actual password:
 
    ```
    --user elastic:password
@@ -96,10 +98,6 @@ To install **Elasticsearch** locally, consult the download and installation inst
    - The second reason—and also the reason that this information was not included in the `.env` file created in the previous step—is that the file format that `curl` uses for configuration information is incompatible with the file format that the `python-dotenv` package uses for the `.env` file.
 
    The `.curl` file that was just created should **not** be checked into version control.
-
-9. Copy the security certificate for the **Elasticsearch** installation into the top-level directory of the repository. (If **Elasticsearch** was installed via the instructions in [README-es-docker-install.md](README-es-docker-install.md), the certificate was saved locally in step 9 of those instructions.)
-
-   If a certificate is not available to the **Elasticsearch Portal** the application will be unable to connect to the **Elasticsearch** instance in order to query data and `ssl.SSLCertVerificationError` errors will appear in the logfile.
 
 ### Adding data to Elasticsearch
 
