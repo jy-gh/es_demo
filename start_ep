@@ -1,5 +1,6 @@
 #!/bin/sh
 
-export REQUESTS_CA_BUNDLE=http_ca.crt
+source .env
+export REQUESTS_CA_BUNDLE=${CERT_FILE}
 
 flask --app es_portal --debug run

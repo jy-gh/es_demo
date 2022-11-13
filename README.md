@@ -171,11 +171,23 @@ The output of the command will indicate the name and location of the output file
 
 Files created by the command are ready to be imported to **Elasticsearch** using the `load_es_import_files` command, described above in [Adding data to Elasticsearch](#adding-data-to-elasticsearch).
 
+## Starting the Elasticsearch Portal web server
+
+A web server hosting the **Elasticsearch Portal** must be started before using the **Elasticsearch Portal**. Run the following command from the top-level directory of the repository:
+
+`./start_ep`
+
+Errors, if any, will be displayed in this terminal window after the server is started.
+
 ## Using the Elasticsearch Portal
 
 The **Elasticsearch Portal** application may be accessed at this URL by default:
 
 [http://localhost:5000/query/search](http://localhost:5000/query/search)
+
+If the browser displays an error message such as "Unable to connect" or "This site can't be reached" it likely means that the web server wasn't started.
+
+See [Starting the Elasticsearch Portal web server](#starting-the-elasticsearch-portal-web-server) for instructions on how to start the web server.
 
 This version of the ES Portal allows users to search for indexed bookmarks using the following kinds of queries:
 
