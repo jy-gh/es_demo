@@ -162,10 +162,10 @@ class BulkLoadESFiles:
 
         if self.arguments['index']:
             index = self.arguments['index']
-        elif 'index' in self.config:
-            index = self.config['index']
-        elif 'INDEX' in self.config:
-            index = self.config['INDEX']
+        elif 'default_index' in self.config:
+            index = self.config['default_index']
+        elif 'DEFAULT_INDEX' in self.config:
+            index = self.config['DEFAULT_INDEX']
 
         if index is None:
             print("Error: no index URL specified by --index or config!")

@@ -14,8 +14,10 @@ bp = Blueprint('query', __name__, url_prefix='/query')
 config = dotenv_values(".env")
 basic = HTTPBasicAuth(config['ELASTIC_USER'], config['ELASTIC_USER_PASSWORD'])
 
-if 'index' in config:
-    default_index = config['index']
+if 'default_index' in config:
+    default_index = config['default_index']
+elif 'DEFAULT_INDEX' in config:
+    default_index = config['DEFAULT_INDEX']
 else:
     default_index = 'bookmark_sample'
 
@@ -57,11 +59,22 @@ def search():
             raw_json = response.json()
             records = standardize_records(raw_json)
 
+        if 'error' in raw_json:
+            current_app.logger.error(raw_json)
+
+            if 'reason' in raw_json['error']:
+                error = raw_json['error']['reason']
+            else:
+                error = 'Unknown application error'
+
+            flash(error, 'error')
+            return render_template('query/search.html')
+
         if records is not None:
             return render_template("query/results.html", records=records)
         else:
             error = "No records found"
-            flash(error)
+            flash(error, 'info')
             return render_template('query/search.html')
 
     else:
